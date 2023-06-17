@@ -100,7 +100,7 @@ const authentication = {
 
 const beforeRequest = (
   request: HttpRequestOptions,
-  z: ZObject,
+  _z: ZObject,
   bundle: Bundle
 ) => {
   const absoluteURL = new URL(
@@ -116,8 +116,6 @@ const beforeRequest = (
       "X-Tidepool-Session-Token": bundle.authData.token,
     };
   }
-
-  z.console.log("url", request.url);
 
   return request;
 };
