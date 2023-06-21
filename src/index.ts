@@ -1,6 +1,7 @@
 import { version as platformVersion } from "zapier-platform-core";
 
 import Authentication from "./authentication";
+import Data from "./triggers/data";
 import Note from "./triggers/note";
 import User from "./triggers/user";
 
@@ -12,6 +13,7 @@ export default {
   authentication: Authentication.authentication,
   beforeRequest: [Authentication.beforeRequest],
   triggers: {
+    [Data.key]: Data,
     [Note.key]: Note,
     [User.key]: User,
   },
