@@ -1,4 +1,9 @@
-import { Bundle, HttpRequestOptions, ZObject } from "zapier-platform-core";
+import {
+  Bundle,
+  HttpRequestOptions,
+  HttpResponse,
+  ZObject,
+} from "zapier-platform-core";
 
 const perform = async (
   z: ZObject,
@@ -120,7 +125,16 @@ const beforeRequest = (
   return request;
 };
 
+const afterResponse = (response: HttpResponse, z: ZObject) => {
+  if (response.status === 403) {
+    throw new z.errors.RefreshAuthError("Session token expired.");
+  }
+
+  return response;
+};
+
 export default {
   authentication,
   beforeRequest,
+  afterResponse,
 };

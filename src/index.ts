@@ -12,6 +12,7 @@ export default {
   platformVersion,
   authentication: Authentication.authentication,
   beforeRequest: [Authentication.beforeRequest],
+  afterResponse: [Authentication.afterResponse],
   triggers: {
     [Data.key]: Data,
     [Note.key]: Note,
