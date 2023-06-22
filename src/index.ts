@@ -4,6 +4,7 @@ import Authentication from "./authentication";
 import Data from "./triggers/data";
 import Note from "./triggers/note";
 import User from "./triggers/user";
+import Upload from "./actions/upload"; // Import the new upload action
 
 const { version } = require("../package.json");
 
@@ -17,5 +18,8 @@ export default {
     [Data.key]: Data,
     [Note.key]: Note,
     [User.key]: User,
+  },
+creates: {
+    [Upload.key]: Upload, // Add the new upload action to the list of creates
   },
 };
