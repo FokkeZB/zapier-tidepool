@@ -14,11 +14,12 @@ const perform = async (
   z: ZObject,
   bundle: Bundle<InputFields>
 ): Promise<Array<Data>> => {
-  const response = await z.request({
+const response = await z.request({
     method: "GET",
     url: `/data/${bundle.authData.userid}`,
     params: {
       latest: "true",
+      types: types
     },
   });
 
