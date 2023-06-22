@@ -4,19 +4,44 @@ const perform = async (
   z: ZObject,
   bundle: Bundle
 ): Promise<any> => {
+  // Start a session
+  const loginResponse = await z.request({
+    method: "POST",
+    url: "/auth/login",
+    body: {
+      email: bundle.authData.email,
+      password: bundle.authData.password
+    }
+  });
+  const sessionToken = loginResponse.data.token;
+
+  // Add the session token to the request headers
+  const headers = {
+    ...request.headers,
+    "X-Tidepool-Session-Token": sessionToken
+  };
+
   const payload = {
     field1: bundle.inputData.field1,
     field2: bundle.inputData.field2,
     // Add more fields as needed
   };
-
-  const response = await z.request({
+  // Upload the data
+  const uploadResponse = await z.request({
     method: "POST",
     url: "/data/{{bundle.authData.userid}}",
     body: payload,
+    headers: headers
+  });
+  // Close the session
+  await z.request({
+    method: "POST",
+    url: "/auth/logout",
+    headers: headers
   });
 
-  return response.data;
+  return uploadResponse.data;
+};
 };
 
 const upload = {
