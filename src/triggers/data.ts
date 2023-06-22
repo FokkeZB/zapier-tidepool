@@ -14,24 +14,17 @@ const perform = async (
   z: ZObject,
   bundle: Bundle<InputFields>
 ): Promise<Array<Data>> => {
-  const response = await z.request({
+const response = await z.request({
     method: "GET",
     url: `/data/${bundle.authData.userid}`,
     params: {
       latest: "true",
+types: bundle.inputData.types.join(',')
     },
   });
 
   const data = response.data as Response;
-
-  const types = bundle.inputData.types;
-
-  if (!Array.isArray(types) || types.length === 0) {
-    return data;
-  }
-
-  return data.filter(({ type }) => types.includes(type));
-};
+  return data;
 
 const choices: Array<{ label: string; sample: string; value: Type }> = [
   {
