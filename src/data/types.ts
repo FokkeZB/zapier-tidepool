@@ -151,7 +151,17 @@ interface Recommended {
   correction: number;
   net: number;
 }
-
+export interface DataUpload {
+  // Include all the fields that can be included in the data to be uploaded
+  // according to the Tidepool API documentation.
+  // For example:
+  time: string;
+  timezoneOffset: number;
+  deviceId: string;
+  uploadId: string;
 export type Data = DataBolus | DataBasal | DataCBG | DataSMBG | DataWizard;
+}
+
+export type Data = DataBolus | DataBasal | DataCBG | DataSMBG | DataWizard | DataUpload;
 
 export type Type = Data["type"];
