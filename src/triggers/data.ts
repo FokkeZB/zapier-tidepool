@@ -26,7 +26,7 @@ types: bundle.inputData.types.join(',')
   const data = response.data as Response;
 
   const types = bundle.inputData.types;
-};
+  return data;
 
 const choices: Array<{ label: string; sample: string; value: Type }> = [
   {
