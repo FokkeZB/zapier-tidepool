@@ -19,7 +19,7 @@ export default {
     [Note.key]: Note,
     [User.key]: User,
   },
-  actions: {
-    [Upload.key]: Upload, // Add the new upload action to the list of actions
+creates: {
+    [Upload.key]: Upload, // Add the new upload action to the list of creates
   },
 };
