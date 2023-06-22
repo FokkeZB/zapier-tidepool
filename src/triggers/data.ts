@@ -19,19 +19,13 @@ const response = await z.request({
     url: `/data/${bundle.authData.userid}`,
     params: {
       latest: "true",
-      types: types
+types: bundle.inputData.types.join(',')
     },
   });
 
   const data = response.data as Response;
 
   const types = bundle.inputData.types;
-
-  if (!Array.isArray(types) || types.length === 0) {
-    return data;
-  }
-
-  return data.filter(({ type }) => types.includes(type));
 };
 
 const choices: Array<{ label: string; sample: string; value: Type }> = [
