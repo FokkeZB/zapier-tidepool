@@ -114,8 +114,14 @@ const beforeRequest = (
   );
 
   request.url = absoluteURL.href;
-
-  if (absoluteURL.pathname !== "/auth/login" && bundle.authData.token) {
+  if (request.method === 'POST' && absoluteURL.pathname === '/v1/data') {
+    request.headers = {
+      ...request.headers,
+      "X-Tidepool-Session-Token": bundle.authData.token,
+      'Content-Type': 'application/json',
+    };
+    request.body = JSON.stringify(request.body);
+  } else if (absoluteURL.pathname !== "/auth/login" && bundle.authData.token) {
     request.headers = {
       ...request.headers,
       "X-Tidepool-Session-Token": bundle.authData.token,
@@ -123,6 +129,7 @@ const beforeRequest = (
   }
 
   return request;
+};
 };
 
 const afterResponse = (response: HttpResponse, z: ZObject) => {
