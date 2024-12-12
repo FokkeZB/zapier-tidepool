@@ -8,29 +8,42 @@ type Response = Array<Data>;
 
 interface InputFields {
   types?: Array<Type>;
+  subtypes?: Array<string>;
 }
 
 const perform = async (
   z: ZObject,
   bundle: Bundle<InputFields>
 ): Promise<Array<Data>> => {
+  const startDate = new Date();
+  startDate.setHours(startDate.getHours() - 12);
+  const startDateStr = startDate.toISOString();
+
+  const params: Record<string, string> = {
+    startDate: startDateStr,
+  };
+
+  if (
+    Array.isArray(bundle.inputData.types) &&
+    bundle.inputData.types.length > 0
+  ) {
+    params.type = bundle.inputData.types.join(",");
+  }
+
+  if (
+    Array.isArray(bundle.inputData.subtypes) &&
+    bundle.inputData.subtypes.length > 0
+  ) {
+    params.subtype = bundle.inputData.subtypes.join(",");
+  }
+
   const response = await z.request({
     method: "GET",
     url: `/data/${bundle.authData.userid}`,
-    params: {
-      latest: "true",
-    },
+    params,
   });
 
-  const data = response.data as Response;
-
-  const types = bundle.inputData.types;
-
-  if (!Array.isArray(types) || types.length === 0) {
-    return data;
-  }
-
-  return data.filter(({ type }) => types.includes(type));
+  return response.data as Response;
 };
 
 const choices: Array<{ label: string; sample: string; value: Type }> = [
@@ -74,9 +87,20 @@ export default {
         key: "types",
         type: "string",
         label: "Types of data to trigger on",
+        helpText:
+          "See [docs](https://tidepool.stoplight.io/docs/tidepool-api/3b03cf89d4c83-diabetes-data-types).",
         list: true,
         required: false,
         choices,
+      },
+      {
+        key: "subtypes",
+        type: "string",
+        label: "Subtypes of data to trigger on",
+        helpText:
+          "See [docs](https://tidepool.stoplight.io/docs/tidepool-api/3b03cf89d4c83-diabetes-data-types).",
+        list: true,
+        required: false,
       },
     ],
     perform,
